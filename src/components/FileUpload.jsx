@@ -42,13 +42,18 @@ const FileUpload = ({ onUploadComplete }) => {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await axios.post('http://localhost:8000/api/docs/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
+    const res = await axios.post(
+  "https://digisign-backend-hmc0.onrender.com/api/docs/upload",
+  formData,
+  {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+    withCredentials: true,
+  }
+);
+
 
       setMessage(res.data.message);
 

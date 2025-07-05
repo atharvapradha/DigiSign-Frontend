@@ -62,9 +62,14 @@ function DigitalSigner() {
     console.log("📤 Submitting with fileId:", fileId);
 
     try {
-      const res = await axios.post('http://localhost:8000/api/sign', formData, {
-        responseType: 'blob',
-      });
+    const res = await axios.post(
+  "https://digisign-backend-hmc0.onrender.com/api/sign",
+  formData,
+  {
+    responseType: "blob",
+  }
+);
+
 
       const blob = new Blob([res.data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);

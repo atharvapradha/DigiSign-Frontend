@@ -11,9 +11,13 @@ const Dashboard = () => {
 
   const fetchFiles = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/files', {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+  "https://digisign-backend-hmc0.onrender.com/api/files",
+  {
+    withCredentials: true,
+  }
+);
+
       const data = Array.isArray(res.data) ? res.data : res.data.files || [];
       setFiles(data);
     } catch (err) {

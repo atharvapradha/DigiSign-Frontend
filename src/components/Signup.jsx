@@ -54,12 +54,13 @@ const Signup = () => {
     if (hasError) return;
 
     try {
-      await axios.post("http://localhost:8000/api/register", {
-        name,
-        username,
-        email,
-        password,
-      });
+   await axios.post("https://digisign-backend-hmc0.onrender.com/api/register", {
+  name,
+  username,
+  email,
+  password,
+});
+
 
       setMessage("✅ Registration successful! Redirecting...");
       setName("");
