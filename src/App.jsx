@@ -21,7 +21,8 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/upload" element={<FileUpload onUploadSuccess={handleUploadSuccess} />} />
         <Route path="/dashboard" element={<Dashboard key={refreshKey} />} />
-        <Route path="/sign/:fileId" element={<DigitalSigner />} /> {/* ✅ Fixed: add dynamic param */}
+        <Route path="/sign" element={<DigitalSigner />} /> {/* ✅ Added route without fileId */}
+        <Route path="/sign/:fileId" element={<DigitalSigner />} /> {/* ✅ Existing dynamic route */}
       </Routes>
     </BrowserRouter>
   );

@@ -13,10 +13,9 @@ const Navbar = () => {
     <nav className="bg-gray-300 text-black w-full py-2 px-10 shadow-lg">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
-<Link to="/upload">
-  <h1 className="text-2xl font-bold cursor-pointer">DigiSign</h1>
-</Link>
-
+          <Link to="/upload">
+            <h1 className="text-2xl font-bold cursor-pointer">DigiSign</h1>
+          </Link>
         </div>
 
         <ul className="flex gap-4 text-sm">
@@ -27,6 +26,7 @@ const Navbar = () => {
               </button>
             </Link>
           </li>
+
           <li>
             <Link to="/upload">
               <button className="bg-white text-white px-3 py-1.5 rounded hover:bg-gray-400 transition">
@@ -34,14 +34,14 @@ const Navbar = () => {
               </button>
             </Link>
           </li>
-        <li>
-<Link to="/sign">
-  <button className="bg-white text-white px-3 py-1.5 rounded hover:bg-gray-400 transition">
-    Editor
-  </button>
-</Link>
 
-</li>
+          <li>
+            <Link to="/sign">
+              <button className="bg-white text-white px-3 py-1.5 rounded hover:bg-gray-400 transition">
+                Editor
+              </button>
+            </Link>
+          </li>
 
           <li>
             <button
