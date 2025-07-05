@@ -21,9 +21,7 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/upload" element={<FileUpload onUploadSuccess={handleUploadSuccess} />} />
         <Route path="/dashboard" element={<Dashboard key={refreshKey} />} />
-        <Route path="/sign" element={<DigitalSigner />} /> 
-
-        <Route path="/view/:fileId" element={<DigitalSigner />} /> {/* ✅ Alternate access */}
+        <Route path="/sign/:fileId" element={<DigitalSigner />} /> {/* ✅ Fixed: add dynamic param */}
       </Routes>
     </BrowserRouter>
   );
