@@ -22,7 +22,7 @@ const Navbar = () => {
         <ul className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-4 text-sm">
           <li>
             <Link to="/dashboard">
-              <button className="bg-white text-black px-3 py-1.5 rounded hover:bg-gray-400 transition">
+              <button className="bg-white text-white px-3 py-1.5 rounded hover:bg-gray-400 transition">
                 Dashboard
               </button>
             </Link>
@@ -30,7 +30,7 @@ const Navbar = () => {
 
           <li>
             <Link to="/upload">
-              <button className="bg-white text-black px-3 py-1.5 rounded hover:bg-gray-400 transition">
+              <button className="bg-white text-white px-3 py-1.5 rounded hover:bg-gray-400 transition">
                 FileUpload
               </button>
             </Link>
@@ -38,7 +38,7 @@ const Navbar = () => {
 
           <li>
             <Link to="/sign">
-              <button className="bg-white text-black px-3 py-1.5 rounded hover:bg-gray-400 transition">
+              <button className="bg-white text-white px-3 py-1.5 rounded hover:bg-gray-400 transition">
                 Editor
               </button>
             </Link>
