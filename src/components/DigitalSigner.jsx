@@ -1,3 +1,4 @@
+// ✅ File: DigitalSigner.jsx
 import React, { useState, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { ChromePicker } from 'react-color';
@@ -13,7 +14,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 
 function DigitalSigner() {
   const { fileId } = useParams();
-  console.log("🧾 fileId from URL:", fileId);
   const [numPages, setNumPages] = useState(null);
   const [signature, setSignature] = useState('');
   const [fontStyle, setFontStyle] = useState('Helvetica');
@@ -59,17 +59,12 @@ function DigitalSigner() {
     formData.append('fontSize', fontSize);
     formData.append('fileId', fileId);
 
-    console.log("📤 Submitting with fileId:", fileId);
-
     try {
-    const res = await axios.post(
-  "https://digisign-backend-hmc0.onrender.com/api/sign",
-  formData,
-  {
-    responseType: "blob",
-  }
-);
-
+      const res = await axios.post(
+        "https://digisign-backend-hmc0.onrender.com/api/sign",
+        formData,
+        { responseType: "blob" }
+      );
 
       const blob = new Blob([res.data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
@@ -85,52 +80,49 @@ function DigitalSigner() {
     }
   };
 
-const handleSave = async () => {
-  if (!file || !signature || !signaturePlaced) {
-    return alert("Upload a PDF, enter signature, and drag it to the PDF");
-  }
+  const handleSave = async () => {
+    if (!file || !signature || !signaturePlaced) {
+      return alert("Upload a PDF, enter signature, and drag it to the PDF");
+    }
 
-  if (!fileId) {
-    alert("❌ File ID missing. Cannot update status.");
-    return;
-  }
+    if (!fileId) {
+      alert("❌ File ID missing. Cannot update status.");
+      return;
+    }
 
-  const pageElement = document.querySelector('.react-pdf__Page');
-  const pageHeight = pageElement?.getBoundingClientRect().height || 0;
-  const adjustedY = pageHeight - dragPosition.y;
+    const pageElement = document.querySelector('.react-pdf__Page');
+    const pageHeight = pageElement?.getBoundingClientRect().height || 0;
+    const adjustedY = pageHeight - dragPosition.y;
 
-  const formData = new FormData();
-  formData.append('pdf', file);
-  formData.append('signature', signature);
-  formData.append('x', dragPosition.x);
-  formData.append('y', adjustedY);
-  formData.append('page', selectedPage);
-  formData.append('color', textColor);
-  formData.append('fontStyle', fontStyle);
-  formData.append('fontSize', fontSize);
-  formData.append('fileId', fileId);
+    const formData = new FormData();
+    formData.append('pdf', file);
+    formData.append('signature', signature);
+    formData.append('x', dragPosition.x);
+    formData.append('y', adjustedY);
+    formData.append('page', selectedPage);
+    formData.append('color', textColor);
+    formData.append('fontStyle', fontStyle);
+    formData.append('fontSize', fontSize);
+    formData.append('fileId', fileId);
 
-  console.log("📤 Saving with fileId:", fileId);
+    try {
+      const res = await axios.post(
+        'https://digisign-backend-hmc0.onrender.com/api/sign',
+        formData,
+        {
+          responseType: 'blob',
+          withCredentials: true,
+        }
+      );
 
-  try {
-    const res = await axios.post(
-      'https://digisign-backend-hmc0.onrender.com/api/sign',
-      formData,
-      {
-        responseType: 'blob',
-        withCredentials: true, // ✅ required for cookies/auth
-      }
-    );
-
-    const newFile = new File([res.data], 'signed.pdf', { type: 'application/pdf' });
-    setFile(newFile);
-    setIsSaved(true);
-  } catch (err) {
-    console.error("❌ Failed to save signed PDF:", err);
-    alert('Failed to save signed PDF');
-  }
-};
-
+      const newFile = new File([res.data], 'signed.pdf', { type: 'application/pdf' });
+      setFile(newFile);
+      setIsSaved(true);
+    } catch (err) {
+      console.error("❌ Failed to save signed PDF:", err);
+      alert('Failed to save signed PDF');
+    }
+  };
 
   const handleDeleteSignature = () => {
     setSignature('');
@@ -140,8 +132,9 @@ const handleSave = async () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-screen bg-gray-50">
-      <div className="flex-1 overflow-auto p-6 bg-white shadow-inner border-r border-gray-200">
+    <div className="flex flex-col md:flex-row w-full h-auto min-h-screen bg-gray-50">
+      {/* PDF Viewer Panel (Desktop & Mobile Responsive) */}
+      <div className="w-full md:w-2/3 overflow-auto p-4 bg-white border-b md:border-b-0 md:border-r border-gray-200">
         {!file ? (
           <div className="flex items-center justify-center h-full text-gray-400 text-lg font-medium">
             Upload a PDF to start signing
@@ -198,9 +191,11 @@ const handleSave = async () => {
         )}
       </div>
 
-      <div className="w-full md:w-1/3 p-8 bg-gray-100 border-l border-gray-300 space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">🖋️ Sign PDF</h2>
+      {/* Control Panel (Desktop & Mobile Responsive) */}
+      <div className="w-full md:w-1/3 p-6 sm:p-8 bg-gray-100 border-t md:border-t-0 md:border-l border-gray-300 space-y-6">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">🖋️ Sign PDF</h2>
 
+        {/* Signature Controls */}
         <div className="space-y-2">
           <label className="text-sm text-gray-600 font-medium">Upload PDF</label>
           <input
@@ -295,14 +290,13 @@ const handleSave = async () => {
             >
               <div
                 ref={previewRef}
-                className="mt-2 p-2 text-center rounded cursor-move w-fit"
+                className="mt-2 p-2 text-center rounded cursor-move w-fit border border-dashed border-gray-400"
                 style={{
                   fontFamily: fontStyle,
                   color: textColor,
                   fontSize: `${fontSize}px`,
                   userSelect: 'none',
                   backgroundColor: 'transparent',
-                  border: '1px dashed #ccc',
                 }}
               >
                 {signature}
@@ -315,7 +309,8 @@ const handleSave = async () => {
           Drag your signature to the correct location on the PDF page.
         </p>
 
-        <div className="flex gap-4">
+        {/* Button Controls */}
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={handleDeleteSignature}
             className="flex-1 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded shadow"
