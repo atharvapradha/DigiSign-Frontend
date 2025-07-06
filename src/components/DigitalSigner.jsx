@@ -85,46 +85,52 @@ function DigitalSigner() {
     }
   };
 
-  const handleSave = async () => {
-    if (!file || !signature || !signaturePlaced) {
-      return alert("Upload a PDF, enter signature, and drag it to the PDF");
-    }
+const handleSave = async () => {
+  if (!file || !signature || !signaturePlaced) {
+    return alert("Upload a PDF, enter signature, and drag it to the PDF");
+  }
 
-    if (!fileId) {
-      alert("❌ File ID missing. Cannot update status.");
-      return;
-    }
+  if (!fileId) {
+    alert("❌ File ID missing. Cannot update status.");
+    return;
+  }
 
-    const pageElement = document.querySelector('.react-pdf__Page');
-    const pageHeight = pageElement?.getBoundingClientRect().height || 0;
-    const adjustedY = pageHeight - dragPosition.y;
+  const pageElement = document.querySelector('.react-pdf__Page');
+  const pageHeight = pageElement?.getBoundingClientRect().height || 0;
+  const adjustedY = pageHeight - dragPosition.y;
 
-    const formData = new FormData();
-    formData.append('pdf', file);
-    formData.append('signature', signature);
-    formData.append('x', dragPosition.x);
-    formData.append('y', adjustedY);
-    formData.append('page', selectedPage);
-    formData.append('color', textColor);
-    formData.append('fontStyle', fontStyle);
-    formData.append('fontSize', fontSize);
-    formData.append('fileId', fileId);
+  const formData = new FormData();
+  formData.append('pdf', file);
+  formData.append('signature', signature);
+  formData.append('x', dragPosition.x);
+  formData.append('y', adjustedY);
+  formData.append('page', selectedPage);
+  formData.append('color', textColor);
+  formData.append('fontStyle', fontStyle);
+  formData.append('fontSize', fontSize);
+  formData.append('fileId', fileId);
 
-    console.log("📤 Saving with fileId:", fileId);
+  console.log("📤 Saving with fileId:", fileId);
 
-    try {
-      const res = await axios.post('http://localhost:8000/api/sign', formData, {
+  try {
+    const res = await axios.post(
+      'https://digisign-backend-hmc0.onrender.com/api/sign',
+      formData,
+      {
         responseType: 'blob',
-      });
+        withCredentials: true, // ✅ required for cookies/auth
+      }
+    );
 
-      const newFile = new File([res.data], 'signed.pdf', { type: 'application/pdf' });
-      setFile(newFile);
-      setIsSaved(true);
-    } catch (err) {
-      console.error("❌ Failed to save signed PDF:", err);
-      alert('Failed to save signed PDF');
-    }
-  };
+    const newFile = new File([res.data], 'signed.pdf', { type: 'application/pdf' });
+    setFile(newFile);
+    setIsSaved(true);
+  } catch (err) {
+    console.error("❌ Failed to save signed PDF:", err);
+    alert('Failed to save signed PDF');
+  }
+};
+
 
   const handleDeleteSignature = () => {
     setSignature('');
