@@ -33,15 +33,15 @@ const Signin = () => {
     }
 
     try {
-const res = await axios.post(
-  "https://digisign-backend-hmc0.onrender.com/api/login",
-  { email, password, username },
-  { withCredentials: true }
-);
+      const res = await axios.post(
+        "https://digisign-backend-hmc0.onrender.com/api/login",
+        { email, password, username },
+        { withCredentials: true }
+      );
 
-
-
+      // ✅ Save the token to localStorage
       localStorage.setItem("token", res.data.token);
+
       setMessage("✅ Login successful!");
       navigate("/upload");
     } catch (err) {
