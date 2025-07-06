@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './Navbar'; // ✅ Adjust this path based on your folder structure
+import Navbar from './Navbar';
 
 const FileUpload = ({ onUploadComplete }) => {
   const [file, setFile] = useState(null);
@@ -39,8 +39,6 @@ const FileUpload = ({ onUploadComplete }) => {
     const formData = new FormData();
     formData.append('pdf', file);
 
-    const token = localStorage.getItem('token'); // ✅ Get token
-
     try {
       const res = await axios.post(
         "https://digisign-backend-hmc0.onrender.com/api/docs/upload",
@@ -48,18 +46,13 @@ const FileUpload = ({ onUploadComplete }) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // ✅ Send token
           },
-          withCredentials: true,
+          withCredentials: true, // ✅ This sends cookie along with request
         }
       );
 
       setMessage(res.data.message);
-
-      if (onUploadComplete) {
-        onUploadComplete();
-      }
-
+      if (onUploadComplete) onUploadComplete();
       navigate('/dashboard');
     } catch (err) {
       setMessage(err.response?.data?.message || 'Upload failed');
@@ -69,10 +62,7 @@ const FileUpload = ({ onUploadComplete }) => {
 
   return (
     <div className="flex flex-col min-h-screen w-screen bg-indigo-600">
-      {/* Navbar at the top */}
       <Navbar />
-
-      {/* Content area takes remaining space and centers the form */}
       <div className="flex flex-1 items-center justify-center">
         <form onSubmit={handleSubmit} className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
           <div

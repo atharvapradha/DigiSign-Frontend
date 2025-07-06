@@ -33,14 +33,11 @@ const Signin = () => {
     }
 
     try {
-      const res = await axios.post(
+      await axios.post(
         "https://digisign-backend-hmc0.onrender.com/api/login",
         { email, password, username },
-        { withCredentials: true }
+        { withCredentials: true } // ✅ Important to receive HTTP-only cookie
       );
-
-      // ✅ Save the token to localStorage
-      localStorage.setItem("token", res.data.token);
 
       setMessage("✅ Login successful!");
       navigate("/upload");
